@@ -176,3 +176,4 @@ if __name__ == "__main__":
 
         if epoch % opt.checkpoint_interval == 0:
             torch.save(model.state_dict(), f"yolo-class/src/weights/yolov3_ckpt_%d.pth" % epoch)
+

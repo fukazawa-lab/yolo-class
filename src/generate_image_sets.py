@@ -19,8 +19,6 @@ class_name = args.class_name  # コマンドライン引数から class_name を
 class_id = args.class_id  # コマンドライン引数から class_id を受け取る
 
 
-# クラスごとにフォルダを作成
-
 # オリジナルのデータセットと新しいデータセットのフォルダを設定
 source_folder = "yolo-class/image_source/"+class_name+"/"  # 犬の画像がまとまっているフォルダ
 annotations_folder = "yolo-class/Annotations/"  # アノテーションファイルを格納するフォルダ
@@ -60,7 +58,7 @@ for image_file in image_files:
 
 # データセットの分割（トレーニング、検証、テストセット）
 images = os.listdir("yolo-class/JPEGImages/")
-train_images, test_images = train_test_split(images, test_size=0.2, random_state=42)
+train_images, test_images = train_test_split(images, test_size=0.5, random_state=42)
 
 
 # train_imagesのファイル名をtrain.txtに追記
