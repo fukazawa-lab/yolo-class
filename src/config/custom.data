@@ -1,4 +1,4 @@
-classes= 1
-train=/content/shrimpdetection/src/data/custom/train.txt
-valid=/content/shrimpdetection/src/data/custom/valid.txt
-names=/content/shrimpdetection/src/data/custom/classes.names
+classes= 10
+train=/content/yolo-class/src/data/custom/train.txt
+valid=/content/yolo-class/src/data/custom/valid.txt
+names=/content/yolo-class/src/data/custom/classes.names
