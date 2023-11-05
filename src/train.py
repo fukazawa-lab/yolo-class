@@ -27,8 +27,8 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=201, help="number of epochs")
     parser.add_argument("--batch_size", type=int, default=8, help="size of each image batch")
     parser.add_argument("--gradient_accumulations", type=int, default=2, help="number of gradient accums before step")
-    parser.add_argument("--model_def", type=str, default="/content/shrimpdetection/src/config/yolov3-custom.cfg", help="path to model definition file")
-    parser.add_argument("--data_config", type=str, default="/content/shrimpdetection/src/config/custom.data", help="path to data config file")
+    parser.add_argument("--model_def", type=str, default="yolo-class/src/config/yolov3-custom.cfg", help="path to model definition file")
+    parser.add_argument("--data_config", type=str, default="yolo-class/src/config/custom.data", help="path to data config file")
     parser.add_argument("--pretrained_weights", type=str, help="if specified starts from checkpoint model")
     parser.add_argument("--n_cpu", type=int, default=1, help="number of cpu threads to use during batch generation")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
@@ -175,4 +175,4 @@ if __name__ == "__main__":
             print(f"---- mAP {AP.mean()}")
 
         if epoch % opt.checkpoint_interval == 0:
-            torch.save(model.state_dict(), f"/content/shrimpdetection/src/weights/yolov3_ckpt_%d.pth" % epoch)
+            torch.save(model.state_dict(), f"yolo-class/src/weights/yolov3_ckpt_%d.pth" % epoch)
