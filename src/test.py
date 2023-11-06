@@ -26,7 +26,11 @@ def evaluate(model, path, iou_thres, conf_thres, nms_thres, img_size, batch_size
     Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
     labels = []
-    sample_metrics = []  # List of tuples (TP, confs, pred)
+    # デフォルトの空メトリクスを設定
+    default_metrics = ([], [], [])
+
+    # sample_metrics にデフォルト値を含むリストを初期化
+    sample_metrics = [default_metrics] * len(dataloader)
     for batch_i, (_, imgs, targets) in enumerate(tqdm.tqdm(dataloader, desc="Detecting objects")):
 
         # Extract labels
@@ -57,9 +61,9 @@ if __name__ == "__main__":
     parser.add_argument("--data_config", type=str, default="config/mask_dataset.data", help="path to data config file")
     parser.add_argument("--weights_path", type=str, default="checkpoints/yolov3_ckpt_36.pth", help="path to weights file")
     parser.add_argument("--class_path", type=str, default="data/mask_dataset.names", help="path to class label file")
-    parser.add_argument("--iou_thres", type=float, default=0.4, help="iou threshold required to qualify as detected")
+    parser.add_argument("--iou_thres", type=float, default=0.6, help="iou threshold required to qualify as detected")
     parser.add_argument("--conf_thres", type=float, default=0.9, help="object confidence threshold")
-    parser.add_argument("--nms_thres", type=float, default=0.4, help="iou thresshold for non-maximum suppression")
+    parser.add_argument("--nms_thres", type=float, default=0.6, help="iou thresshold for non-maximum suppression")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
     opt = parser.parse_args()
 

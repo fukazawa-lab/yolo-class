@@ -13,13 +13,10 @@ from torch.autograd import Variable
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--image_path", type=str, default='/content/shrimpdetection/src/input.jpg', help="path to image file")
-#    parser.add_argument("--image_path", type=str, default='/content/shrimpdetection/src/shrimp_target.jpg', help="path to image file")
-#   parser.add_argument("--image_path", type=str, default='/content/shrimpdetection/JPEGImages/IMG_11_jpg.rf.c9c10e73633fb21009816078bc689ba6.jpg', help="path to image file")
-#    parser.add_argument("--image_path", type=str, default='/content/shrimpdetection/JPEGImages/00032.jpg', help="path to image file")
-    parser.add_argument("--model_def", type=str, default="/content/shrimpdetection/src/config/yolov3-custom.cfg", help="path to model definition file")
-    parser.add_argument("--weights_path", type=str, default="/content/shrimpdetection/src/weights/yolov3_ckpt_200.pth", help="path to weights file")
-    parser.add_argument("--class_path", type=str, default="/content/shrimpdetection/src/data/custom/classes.names", help="path to class label file")
+    parser.add_argument("--image_path", type=str, default='/content/yolo-class/src/input.jpg', help="path to image file")
+    parser.add_argument("--model_def", type=str, default="/content/yolo-class/src/config/yolov3-custom.cfg", help="path to model definition file")
+    parser.add_argument("--weights_path", type=str, default="/content/yolo-class/src/weights/yolov3_ckpt_200.pth", help="path to weights file")
+    parser.add_argument("--class_path", type=str, default="/content/yolo-class/src/data/custom/classes.names", help="path to class label file")
     parser.add_argument("--conf_thres", type=float, default=0.8, help="object confidence threshold")
     parser.add_argument("--nms_thres", type=float, default=0.2, help="iou threshold for non-maximum suppression")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
@@ -63,14 +60,22 @@ if __name__ == "__main__":
     detections = detections[0]
     if detections is not None:
         detections = rescale_boxes(detections, opt.img_size, [height, width])
-        unique_labels = detections[:, -1].cpu().unique()
-        n_cls_preds = len(unique_labels)
-        for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
-            x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
-            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        max_conf_idx = torch.argmax(detections[:, 4])  # 最も高い信頼度のインデックスを見つける
+        x1, y1, x2, y2, conf, cls_conf, cls_pred = detections[max_conf_idx]
+        x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
+        class_name = classes[int(cls_pred)]
+        print(f"認識物体: {class_name}, 信頼度: {conf * cls_conf:.2f}")
+        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
+
+        # unique_labels = detections[:, -1].cpu().unique()
+        # n_cls_preds = len(unique_labels)
+        # for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
+        #     x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
+        #     class_name = classes[int(cls_pred)]
+        #     print(f"認識物体: {class_name}, 信頼度: {conf * cls_conf:.2f}")
+        #     cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     cv2.imwrite('/content/output.jpg', img)  # 画像を保存
-    length= len(detections)-1
+    length = len(detections) - 1
     print("個数:", length)
-
