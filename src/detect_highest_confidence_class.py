@@ -48,7 +48,7 @@ def predict_classes(image_path, model, classes, device, img_size, dynamic_conf_t
         x1, y1, x2, y2, conf, cls_conf, cls_pred = detections[max_conf_idx]
         x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
         class_name = classes[int(cls_pred)]
-        print(f"認識物体: {class_name}, 信頼度: {conf * cls_conf:.2f}, {true_class}")
+        print(f"認識物体: {class_name}, 信頼度: {conf * cls_conf:.2f}, {true_class}, {image_path}")
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
     return class_name
@@ -57,7 +57,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--valid_file", type=str, default='/content/yolo-class/src/data/custom/valid.txt', help="path to valid.txt")
     parser.add_argument("--model_def", type=str, default="/content/yolo-class/src/config/yolov3-custom.cfg", help="path to model definition file")
-    parser.add_argument("--weights_path", type=str, default="/content/yolo-class/src/weights/yolov3_ckpt_50.pth", help="path to weights file")
+    parser.add_argument("--weights_path", type=str, default="/content/yolo-class/src/weights/yolov3_ckpt_200.pth", help="path to weights file")
     parser.add_argument("--class_path", type=str, default="/content/yolo-class/src/data/custom/classes.names", help="path to class label file")
     parser.add_argument("--img_size", type=int, default=416, help="size of each image dimension")
     opt = parser.parse_args()

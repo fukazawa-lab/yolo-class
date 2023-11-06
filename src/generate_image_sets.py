@@ -90,7 +90,7 @@ for image_file in image_files:
 
 # データセットの分割（トレーニング、検証、テストセット）
 images = os.listdir("yolo-class/JPEGImages/")
-train_images, test_images = train_test_split(images, test_size=0.1, random_state=42)
+train_images, test_images = train_test_split(images, test_size=0.2, random_state=42)
 
 
 # train_imagesのファイル名をtrain.txtに追記
